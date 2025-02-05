@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using CapaEntidad;
+using CapaNegocio;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,6 +10,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Forms;
 
 namespace JDcaja
@@ -19,7 +22,7 @@ namespace JDcaja
             InitializeComponent();
         }
 
-        public string _host = System.Configuration.ConfigurationSettings.AppSettings["host"];
+        //public string _host = System.Configuration.ConfigurationSettings.AppSettings["host"];
 
         public class UsuarioLogin
         {
@@ -64,71 +67,36 @@ namespace JDcaja
             return true;
         }
 
-        private async void button1_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
             if (validImput(false) == false)
             {
                 return;
             }
-            btninicial.Text = "Espere...";
-            btninicial.Enabled = false;
-            btnsalir.Enabled = false;
-            if (txtusuario.Text == "Buenaventura" && txtpassword.Text == "1234")
+
+            Usuario ousuario = new CN_Usuario().Listar().Where(u => u.Documento == txtusuario.Text && u.Clave == txtpassword.Text).FirstOrDefault();
+
+            if (ousuario != null)
             {
                 this.Hide();
-                Ventas ventas = new Ventas();
-                ventas.Nombre = "Buenaventura Sanchez";
-                //pantalla_Principal.token = rs.user_token;
-                //pantalla_Principal.ID = rs.ID;
-                ventas.Show();
+                Menu form = new Menu(ousuario);
+                form.Show();
+
+                form.FormClosing += frm_closing;
             }
             else
             {
                 MessageBox.Show("El nombre de usuario y/o la clave es Invalido");
-                btninicial.Text = "Inicial";
-                btninicial.Enabled = true;
-                btnsalir.Enabled = true;
+                txtusuario.Text = "";
+                txtpassword.Text = "";
             }
-            //this.Hide();
-            //Pantalla_Principal pantalla_Principal = new Pantalla_Principal();
-            //pantalla_Principal.Nombre = rs.Nombre;
-            //pantalla_Principal.token = rs.user_token;
-            //pantalla_Principal.ID = rs.ID;
-            //pantalla_Principal.Show();
-            //UsuarioLogin login = new UsuarioLogin()
-            //{
-            //    usuario = txtusuario.Text,
-            //    password = txtpassword.Text
-            //};
-            //using (HttpClient Client = new HttpClient())
-            //{
-            //    var serialLogin = JsonConvert.SerializeObject(login);
-            //    var content = new StringContent(serialLogin, Encoding.UTF8, "application/json");
-            //    var result = await Client.PostAsync(_host + "/api/LoginPC", content);
-            //    responseLgin rs = JsonConvert.DeserializeObject<responseLgin>(await result.Content.ReadAsStringAsync());
+        }
 
-            //    if (rs.Estatus == true)
-            //    {
-            //        this.Hide();
-            //        Pantalla_Principal pantalla_Principal = new Pantalla_Principal();
-            //        pantalla_Principal.Nombre = rs.Nombre;
-            //        pantalla_Principal.token = rs.user_token;
-            //        pantalla_Principal.ID = rs.ID;
-            //        pantalla_Principal.Show();
-
-            //    }
-            //    else
-            //    {
-            //        MessageBox.Show(rs.Mensaje);
-            //    }
-            //    txtpassword.Text = "";
-            //    txtusuario.Text = "";
-            //    btninicial.Text = "Entrar";
-            //    btninicial.Enabled = true;
-            //    btnsalir.Enabled = true;
-            //    txtusuario.Focus();
-
-            //}
+        private void frm_closing(object sender, FormClosingEventArgs e)
+        {
+            txtusuario.Text = "";
+            txtpassword.Text = "";
+            Show();
         }
 
         private void Login_Load(object sender, EventArgs e)
@@ -150,6 +118,10 @@ namespace JDcaja
             {
                 validImput();
             }
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
         }
     }
 }

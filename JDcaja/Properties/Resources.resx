@@ -127,7 +127,19 @@
   <data name="btnimg2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\btnimg2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="check_5610944" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\check_5610944.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="delete_12319540" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\delete_12319540.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="delete_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\delete icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="dream-aquarium-screensaver-screenshot" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\dream-aquarium-screensaver-screenshot.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PlantillaCompra" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PlantillaCompra.html;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
 </root>

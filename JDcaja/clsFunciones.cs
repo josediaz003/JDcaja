@@ -119,7 +119,7 @@ namespace JDcaja
                 }
                 else { parte1 = par1; }                      // **********
                 ticket = parte1;
-                parte2 = total.ToString() + "$";
+                parte2 = "$"+ total.ToString() ;
                 max = 40 - (parte1.Length + parte2.Length);
                 for (int i = 0; i < max; i++)                // **********
                 {

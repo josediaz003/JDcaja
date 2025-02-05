@@ -1,13 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace JDcaja
@@ -18,8 +13,10 @@ namespace JDcaja
         {
             InitializeComponent();
         }
-        public string _host = System.Configuration.ConfigurationSettings.AppSettings["host"];
+
+        //public string _host = System.Configuration.ConfigurationSettings.AppSettings["host"];
         public string Nombre;
+
         public string token;
         public int ID;
         public string Usuario;
@@ -27,105 +24,103 @@ namespace JDcaja
         public string produto;
         public string cantidad;
         public string precio;
+
         public class respuesta_completarJugada
         {
             public bool Estatus { get; set; }
             public string Mensaje { get; set; }
         }
+
         public class Completarfactura
         {
             //public List<detallesfacturas> detallesfacturas { get; set; }
             public int ID { get; set; }
+
             public string usuario { get; set; }
             public DateTime fecha { get; set; }
             public string cliente { get; set; }
             public double totalpago { get; set; }
             public string estatus { get; set; }
-
         }
+
         //public List<detallesfacturas> productos { get; set; }
         public class resumenFacturas
         {
             //Entrada
             public int ID { get; set; }
+
             public string token { get; set; }
             public int idfactura { get; set; }
-
-
         }
 
-        class respuesta
+        private class respuesta
         {
             public bool Estatus { get; set; }
             public string Mensaje { get; set; }
             public List<Completarfactura> Data { get; set; }
             public List<detallesfacturas> detalle { get; set; }
-
         }
+
         private List<detallesfacturas> detalle;
 
-        public async void LoadDatos()
+        public void LoadDatos()
         {
-
-
             var obj = JsonConvert.SerializeObject(new resumenFacturas()
             {
                 token = token,
                 ID = ID
-
             });
 
-            using (HttpClient Client = new HttpClient())
-            {
+            //using (HttpClient Client = new HttpClient())
+            //{
+            //    var content = new StringContent(obj, Encoding.UTF8, "application/json");
+            //    var result = await Client.PostAsync(_host + "/api/FacturasCompletas", content);
+            //    respuesta rs = JsonConvert.DeserializeObject<respuesta>(await result.Content.ReadAsStringAsync());
+            //    if (rs.Estatus == false)
+            //    {
+            //        MessageBox.Show(rs.Mensaje);
+            //        return;
+            //    }
 
-                var content = new StringContent(obj, Encoding.UTF8, "application/json");
-                var result = await Client.PostAsync(_host + "/api/FacturasCompletas", content);
-                respuesta rs = JsonConvert.DeserializeObject<respuesta>(await result.Content.ReadAsStringAsync());
-                if (rs.Estatus == false)
-                {
-                    MessageBox.Show(rs.Mensaje);
-                    return;
-                }
+            //    detalle = rs.detalle;
+            //    listBox2.Items.Clear();
+            //    if (string.IsNullOrEmpty(this.txtfact.Text))
+            //    {
+            //        foreach (Completarfactura item in rs.Data)
+            //        {
+            //            listBox2.Items.Add(item: string.Format("{0}- {1}  - {2}-{3}  - Precio= $-{4}- {5}"
+            //                                , item.usuario, item.cliente, item.fecha, item.ID, item.totalpago, item.estatus));
 
-                detalle = rs.detalle;
-                listBox2.Items.Clear();
-                if (string.IsNullOrEmpty(this.txtfact.Text))
-                {
-                    foreach (Completarfactura item in rs.Data)
-                    {
+            //        }
+            //    }
+            //    else
+            //    {
+            //        foreach (Completarfactura item in rs.Data.Where(x => x.usuario.ToLower().Contains(this.txtfact.Text.ToString()) ||
+            //                                                        x.cliente.ToLower().Contains(this.txtfact.Text.ToString())))
+            //        {
+            //            listBox2.Items.Add(item: string.Format("{0}- {1}  - {2} - {3}  - Precio= $-{4}- {5}"
+            //                               , item.usuario, item.cliente, item.fecha, item.ID, item.totalpago, item.estatus));
+            //        }
+            //        //this.Premios = new ObservableCollection<MensajesList>(
+            //        //    this.mensajesList.Where(
+            //        //        l => l.Titulo.ToLower().Contains(this.Filter.ToLower()) ||
+            //        //             l.Comentario.ToLower().Contains(this.Filter.ToLower())));
+            //    }
 
-                        listBox2.Items.Add(item: string.Format("{0}- {1}  - {2}-{3}  - Precio= $-{4}- {5}"
-                                            , item.usuario, item.cliente, item.fecha, item.ID, item.totalpago, item.estatus));
-
-                    }
-                }
-                else
-                {
-                    foreach (Completarfactura item in rs.Data.Where(x => x.usuario.ToLower().Contains(this.txtfact.Text.ToString()) ||
-                                                                    x.cliente.ToLower().Contains(this.txtfact.Text.ToString())))
-                    {
-                        listBox2.Items.Add(item: string.Format("{0}- {1}  - {2} - {3}  - Precio= $-{4}- {5}"
-                                           , item.usuario, item.cliente, item.fecha, item.ID, item.totalpago, item.estatus));
-                    }
-                    //this.Premios = new ObservableCollection<MensajesList>(
-                    //    this.mensajesList.Where(
-                    //        l => l.Titulo.ToLower().Contains(this.Filter.ToLower()) ||
-                    //             l.Comentario.ToLower().Contains(this.Filter.ToLower())));
-                }
-
-
-
-            }
+            //}
         }
+
         private void FacturasCompletadasPage_Load(object sender, EventArgs e)
         {
             LoadDatos();
         }
+
         private int indexDetalleSelected = -1;
-        string[,] ListaCompra = new string[200, 8];
-        int Fila = 0;
-        int idfact;
-        double total;
+        private string[,] ListaCompra = new string[200, 8];
+        private int Fila = 0;
+        private int idfact;
+        private double total;
+
         private void btnVerDetalle_Click(object sender, EventArgs e)
         {
             try
@@ -143,8 +138,6 @@ namespace JDcaja
                     return;
                 }
 
-
-
                 var data = listBox2.Items[listBox2.SelectedIndex];
                 //double Total = 0;
                 string[] respuestas = data.ToString().Split(new Char[] { '-' });
@@ -154,7 +147,6 @@ namespace JDcaja
                 total = double.Parse(respuestas[5]);
                 foreach (detallesfacturas item in detalle.Where(x => x.idfactura == int.Parse(respuestas[3])))
                 {
-
                     ListaCompra[Fila, 0] = item.producto;
                     ListaCompra[Fila, 1] = item.cantidad.ToString();
                     ListaCompra[Fila, 2] = item.precio.ToString();
@@ -162,22 +154,14 @@ namespace JDcaja
                     ListaCompra[Fila, 4] = respuestas[3];
                     ListaCompra[Fila, 5] = item.NombreProducto;
 
-
-
                     dataGridView1.Rows.Add(ListaCompra[Fila, 4], ListaCompra[Fila, 0], ListaCompra[Fila, 5], ListaCompra[Fila, 1], ListaCompra[Fila, 2], ListaCompra[Fila, 3]);
                     Fila++;// se le agrega uno a la fila para futuras generaciones
-
-
                 }
 
-
-
                 txtfact.Focus();
-                
             }
             catch
             {
-
             }
         }
 
@@ -196,8 +180,6 @@ namespace JDcaja
                 return;
             }
 
-
-
             var data = listBox2.Items[listBox2.SelectedIndex];
             //double Total = 0;
             string[] respuestas = data.ToString().Split(new Char[] { '-' });
@@ -208,7 +190,6 @@ namespace JDcaja
                MessageBoxButtons.YesNo);
             if (confirmResult == DialogResult.No)
             {
-               
                 return;
             }
             Usuario = respuestas[0];
@@ -216,7 +197,6 @@ namespace JDcaja
             total = double.Parse(respuestas[5]);
             foreach (detallesfacturas item in detalle.Where(x => x.idfactura == int.Parse(respuestas[3])))
             {
-
                 ListaCompra[Fila, 0] = item.producto;
                 ListaCompra[Fila, 1] = item.cantidad.ToString();
                 ListaCompra[Fila, 2] = item.precio.ToString();
@@ -224,15 +204,10 @@ namespace JDcaja
                 ListaCompra[Fila, 4] = respuestas[3];
                 ListaCompra[Fila, 5] = item.NombreProducto;
 
-
-
                 dataGridView1.Rows.Add(ListaCompra[Fila, 4], ListaCompra[Fila, 0], ListaCompra[Fila, 5], ListaCompra[Fila, 1], ListaCompra[Fila, 2], ListaCompra[Fila, 3]);
                 Fila++;// se le agrega uno a la fila para futuras generaciones
-
-
             }
 
-            
             clsFunciones.CreaTicket Ticket1 = new clsFunciones.CreaTicket();
 
             Ticket1.TextoCentro(" Lendy's Tropical ");
@@ -260,7 +235,7 @@ namespace JDcaja
             Ticket1.TextoIzquierda(" ");
             Ticket1.AgregaTotales("Total", total); // imprime linea con total
             Ticket1.AgregaTotales("Efectivo Entregado:", total);
-            Ticket1.AgregaTotales("Efectivo Devuelto:",0);
+            Ticket1.AgregaTotales("Efectivo Devuelto:", 0);
             Ticket1.TextoIzquierda(" ");
             clsFunciones.CreaTicket.LineasGuion();
             Ticket1.TextoCentro("Gracias por visitar Lendy's Tropical");
@@ -272,7 +247,6 @@ namespace JDcaja
             Ticket1.TextoIzquierda(" ");
             string impresora = "Generic / Text Only";
             Ticket1.ImprimirTiket(impresora);
-
         }
     }
 }
